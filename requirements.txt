@@ -1,0 +1,10 @@
+prefect==2.14.5
+pandas==2.2.2
+duckdb==0.10.2
+requests==2.31.0
+griffe==0.37.0
+pandera==0.10.1
+duckdb-engine==0.17.0
+dbt-core==1.6.0
+dbt-duckdb==1.6.0
+polars==0.20.0
