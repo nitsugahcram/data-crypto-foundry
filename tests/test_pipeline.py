@@ -1,5 +1,5 @@
-from prefect_flows.pipeline import datafoundry_pipeline
+from prefect_flows.pipeline import data_crypto_foundry_pipeline
 
 def test_pipeline_runs_without_exception():
-    # datafoundry_pipeline()
+    # data_crypto_foundry_pipeline()
     assert True

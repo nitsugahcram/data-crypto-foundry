@@ -1,6 +1,6 @@
-# 🏗️ Data Crypto Foundry – Robust Data Pipeline for Crypto Analytics
+# 🏗️ DataFoundry – Robust Data Pipeline for Crypto Analytics
 
-**Data Crypto Foundry** is a modern data pipeline designed to ingest, validate, transform and test historical Bitcoin market data. It combines high-performance tools like Polars, DuckDB, dbt, and Prefect to ensure data quality, reproducibility and pipeline observability.
+**DataFoundry** is a modern data pipeline designed to ingest, validate, transform and test historical Bitcoin market data. It combines high-performance tools like Polars, DuckDB, dbt, and Prefect to ensure data quality, reproducibility and pipeline observability.
 
 ---
 
@@ -26,10 +26,34 @@ The goal of this pipeline is to prepare reliable, tested and ready-to-analyze Bi
 
 ---
 
+## 📈 Flow Diagram (ASCII)
+
+```
+[CoinGecko API]
+      │
+      ▼
+[fetch_btc_data (Polars)]
+      │
+      ▼
+[validate_with_polars] -> [failed]
+      │
+      ▼
+[save_to_csv → data/input.csv]
+      │
+      ▼
+[load_to_duckdb → foundry.duckdb/raw_data]
+      │
+      ▼
+[dbt run → btc_daily_stats]
+      │
+      ▼
+[dbt test] -> [failed]
+```
+
 ## 📁 Project Structure
 
 ```
-data-crypto-foundry/
+data-foundry/
 ├── data/                        # CSVs and local outputs
 ├── dbt_project/                # dbt config and models
 │   ├── dbt_project.yml
@@ -61,6 +85,7 @@ python prefect_flows/pipeline.py
 ```
 
 This will:
+
 - Fetch daily Bitcoin market data from CoinGecko
 - Validate the DataFrame using Polars assertions
 - Save raw CSV locally (`data/input.csv`)
@@ -72,14 +97,17 @@ This will:
 
 ## 🧪 Validation Logic
 
-### ✅ Polars (in-Python):
+### ✅ Polars (in-Python)
+
 - `price` > 10,000
 - `market_cap` > 0
 - `volume` not null
 - `date` unique
 
-### ✅ dbt Tests:
+### ✅ dbt Tests
+
 Defined in `btc_daily_stats.yml`:
+
 - not_null + range test for `price_usd`
 - not_null for `market_cap_billion`, `volume_million`
 - unique for `date`
@@ -93,11 +121,13 @@ If using Prefect locally:
 ```bash
 prefect server start
 ```
+
 Then visit: `http://localhost:4200`
 
 ---
 
 ## 📌 Future Enhancements
+
 - Add `pytest`-based unit tests for each task
 - Add Great Expectations (optional)
 - Generate HTML docs with `dbt docs generate`
@@ -107,4 +137,3 @@ Then visit: `http://localhost:4200`
 ---
 
 Built by **Agustin** – aiming to demonstrate senior-level engineering practices through clean design, modular structure and data quality focus. ✨
-
